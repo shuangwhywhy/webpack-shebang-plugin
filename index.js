@@ -8,8 +8,15 @@ module.exports = class ShebangPlugin {
         this.entries = {};
         this.options = {
             shebangRegExp: /[\s\n\r]*(#!.*)[\s\n\r]*/gm,
+            chmod: 0o755,
             ...(opts || {})
         };
+        if (!this.options.shebangRegExp) {
+            this.options.shebangRegExp = /[\s\n\r]*(#!.*)[\s\n\r]*/gm;
+        }
+        if (!this.options.chmod && this.options.chmod !== 0) {
+            this.options.chmod = 0o755;
+        }
     }
 
     apply(compiler) {
@@ -56,6 +63,11 @@ module.exports = class ShebangPlugin {
                     }
                 }
             });
+        });
+        compiler.hooks.assetEmitted.tap('ShebangPlugin', (file, { targetPath }) => {
+            if (this.options.chmod !== 0) {
+                fs.chmodSync(targetPath, this.options.chmod);
+            }
         });
     }
 }
