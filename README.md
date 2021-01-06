@@ -1,6 +1,6 @@
 # Introduction
 
-**This plugin prepend Shebang automatically to the generated module output file.**
+This is an all-in-one webpack plugin which prepends hashbangs automatically to the generated bundle files and make it executable -- all revived from your entry source file.
 
 The difference to webpack BannerPlugin is you can specify Shebang mark in your source file as your wish, and the shebang will only be prepended to the files which has shebang mark matching the pattern. You are also free to change the pattern if you want.
 
@@ -85,7 +85,12 @@ new ShebangPlugin({
     // * If you create one of your own, you should keep sure that the main part will be grouped out as $1,
     //   and it will be used as your shebang.
     // * If you are not sure how to write your regular expression, please just leave it unset.
-    shebangRegExp: /[\s\n\r]*(#!.*)[\s\n\r]*/gm
+    shebangRegExp: /[\s\n\r]*(#!.*)[\s\n\r]*/gm,
+
+    // optional, you can specify r/w/e permissions in octal value.
+    // The default value is 0o755, which makes the output bundle executable.
+    // You can set the value to 0, if you want to keep the default permissions.
+    chmod: 0o755
 })
 ```
 
@@ -95,14 +100,14 @@ new ShebangPlugin({
 
 Suppose you have two different entries, and you wish to have two output bundles:
 
-- dist/
-    - bundle1.js
-    - bundle2.js
-- src/
-    - entry1.js
-    - entry2.js
-    - import-in-first-bundle.js
-- webpack.config.js
+- **dist/**
+    - *bundle1.js*
+    - *bundle2.js*
+- **src/**
+    - *entry1.js*
+    - *entry2.js*
+    - *import-in-first-bundle.js*
+- *webpack.config.js*
 
 #### src/entry1.js
 
