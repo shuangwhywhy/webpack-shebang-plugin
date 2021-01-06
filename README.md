@@ -2,11 +2,9 @@
 
 This is an all-in-one webpack plugin which prepends hashbangs automatically to the generated bundle files and make it executable -- all revived from your entry source file.
 
-The difference to webpack BannerPlugin is you can specify Shebang mark in your source file as your wish, and the shebang will only be prepended to the files which has shebang mark matching the pattern. You are also free to change the pattern if you want.
-
 *You can actually use this plugin to do anything that BannerPlugin is able to do, by changing the default pattern and the mark in your source files. Please see **More Usage** demo for more details.*
 
-This plugin embeds a simple loader which handles shebang tag. You don't need to install any other dependencies, neither extra configurations.
+This plugin embeds a simple loader which deals with the hashbang syntax OR any syntax you can specify as a regular expression. You don't need any other dependencies or libs, such as shebang-loader, BannerPlugin, nor do you need extra configurations.
 
 # Installation
 
@@ -90,7 +88,7 @@ new ShebangPlugin({
     // optional, you can specify r/w/e permissions in octal value.
     // The default value is 0o755, which makes the output bundle executable.
     // You can set the value to 0, if you want to keep the default permissions.
-    chmod: 0o755
+    chmod: 0o755,
 })
 ```
 
