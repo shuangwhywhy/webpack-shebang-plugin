@@ -17,7 +17,7 @@ Or in yarn:
 yarn add -D webpack-shebang-plugin
 ```
 
-# Usage
+# Simple Usage
 
 #### Entry JS file:
 
