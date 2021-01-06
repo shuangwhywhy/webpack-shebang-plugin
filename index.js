@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const { ReplaceSource } = require('webpack-sources');
-const { PROCESS_ASSETS_STAGE_ADDITIONAL } = require('webpack');
 
 module.exports = class ShebangPlugin {
 
     constructor(opts = {}) {
+        this.entries = {};
         this.options = {
             shebangRegExp: /[\s\n\r]*(#!.*)[\s\n\r]*/gm,
             ...(opts || {})
@@ -36,10 +36,12 @@ module.exports = class ShebangPlugin {
                 }
             });
             compilation.hooks.buildModule.tap('ShebangPlugin', mod => {
-                mod.loaders.push({
-                    loader: path.resolve(__dirname, 'loader.js'),
-                    options: this.options || {}
-                });
+                if (mod.loaders instanceof Array) {
+                    mod.loaders.push({
+                        loader: path.resolve(__dirname, 'loader.js'),
+                        options: this.options || {}
+                    });
+                }
             });
         });
         compiler.hooks.make.tap('ShebangPlugin', compilation => {
