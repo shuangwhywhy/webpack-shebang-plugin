@@ -24,7 +24,17 @@ module.exports = class ShebangPlugin {
             this.entries = {};
             for (const name in entries) {
                 const entry = entries[name];
-                const first = entry.import[0];
+                let first = '';
+                if (Array.isArray(entry)) {
+                    first = entry[0];
+                } else if (Array.isArray(entry.import)) {
+                    first = entry.import[0];
+                } else if (typeof entry == 'string') {
+                    first = entry;
+                }
+                if (!first) {
+                    throw new Error('Failed to find entry config. webpack@>=4.0.0 is required.');
+                }
                 const file = path.resolve(context, first);
                 if (fs.existsSync(file)) {
                     const content = fs.readFileSync(file).toString();
@@ -52,7 +62,7 @@ module.exports = class ShebangPlugin {
             });
         });
         compiler.hooks.make.tap('ShebangPlugin', compilation => {
-            compilation.hooks.afterProcessAssets.tap('ShebangPlugin', assets => {
+            compilation.hooks.afterOptimizeAssets.tap('ShebangPlugin', assets => {
                 for (const name in assets) {
                     const source = assets[name];
                     if (name in this.entries) {
@@ -65,8 +75,15 @@ module.exports = class ShebangPlugin {
             });
         });
         compiler.hooks.assetEmitted.tap('ShebangPlugin', (file, { targetPath }) => {
+            let target = targetPath;
+            if (!target && compiler.outputPath) {
+                target = path.resolve(compiler.outputPath, file);
+            }
             if (this.options.chmod !== 0) {
-                fs.chmodSync(targetPath, this.options.chmod);
+                if (!target) {
+                    throw new Error('Failed to locate the output file. webpack@>=4.0.0 is required.');
+                }
+                fs.chmodSync(target, this.options.chmod);
             }
         });
     }
