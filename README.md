@@ -6,6 +6,10 @@ This is an all-in-one webpack plugin which prepends hashbangs automatically to t
 
 This plugin embeds a simple loader which deals with the hashbang syntax OR any syntax you can specify as a regular expression. You don't need any other dependencies or libs, such as shebang-loader, BannerPlugin, nor do you need extra configurations.
 
+# Requirements
+
+webpack >= 4.0.0 is required.
+
 # Installation
 
 In npm:
