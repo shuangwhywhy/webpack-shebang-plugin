@@ -11,6 +11,7 @@ module.exports = class ShebangPlugin {
             chmod: 0o755,
             ...(opts || {})
         };
+        this.shebangedAssets = {};
         if (!this.options.shebangRegExp) {
             this.options.shebangRegExp = /[\s\n\r]*(#!.*)[\s\n\r]*/gm;
         }
@@ -22,6 +23,7 @@ module.exports = class ShebangPlugin {
     apply(compiler) {
         compiler.hooks.entryOption.tap('ShebangPlugin', (context, entries) => {
             this.entries = {};
+            this.shebangedAssets = {};
             for (const name in entries) {
                 const entry = entries[name];
                 let first = '';
@@ -70,6 +72,7 @@ module.exports = class ShebangPlugin {
                         const rep = new ReplaceSource(source, 'shebang');
                         rep.insert(0, shebang + '\n\n', 'shebang');
                         compilation.updateAsset(name, rep);
+                        this.shebangedAssets[name] = shebang;
                     }
                 }
             });
@@ -83,7 +86,9 @@ module.exports = class ShebangPlugin {
                 if (!target) {
                     throw new Error('Failed to locate the output file. webpack@>=4.0.0 is required.');
                 }
-                fs.chmodSync(target, this.options.chmod);
+                if (file in this.shebangedAssets) {
+                    fs.chmodSync(target, this.options.chmod);
+                }
             }
         });
     }
