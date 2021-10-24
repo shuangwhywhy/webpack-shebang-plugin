@@ -1,0 +1,1 @@
+console.log("shebang"),console.log(process.argv);

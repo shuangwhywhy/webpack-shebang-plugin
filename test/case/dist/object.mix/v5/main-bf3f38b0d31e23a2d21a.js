@@ -1,0 +1,1 @@
+(()=>{var o={654:()=>{console.log("shebang"),console.log(process.argv)}},r={};(function e(s){var n=r[s];if(void 0!==n)return n.exports;var a=r[s]={exports:{}};return o[s](a,a.exports,e),a.exports})(654),console.warn("no shebang out"),console.log(process.argv)})();
