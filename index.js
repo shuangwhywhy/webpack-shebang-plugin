@@ -21,7 +21,16 @@ module.exports = class ShebangPlugin {
     }
 
     apply(compiler) {
-        compiler.hooks.entryOption.tap('ShebangPlugin', (context, entries) => {
+        compiler.hooks.afterCompile.tap('ShebangPlugin', (compilation) => {
+            // console.dir(params, {depth: 0});
+            // console.dir(compilation.entries, {depth: 0});
+            // console.dir(compilation.entrypoints, {depth: 0});
+            // console.dir(compilation.chunks, {depth: 0});
+            // console.dir(compilation.assets, {depth: 0});
+            // console.dir(compilation.modules, {depth: 1});
+            console.dir(compilation.records, {depth: 2});
+        });
+        compiler.hooks.compile.tap('ShebangPlugin', (context, entries) => {
             this.entries = {};
             this.shebangedAssets = {};
             if (typeof entries === 'string') {
