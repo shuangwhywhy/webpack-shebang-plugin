@@ -24,6 +24,9 @@ module.exports = class ShebangPlugin {
         compiler.hooks.entryOption.tap('ShebangPlugin', (context, entries) => {
             this.entries = {};
             this.shebangedAssets = {};
+            if (typeof entries === 'string') {
+                entries = {main: entries};
+            }
             for (const name in entries) {
                 const entry = entries[name];
                 let first = '';
