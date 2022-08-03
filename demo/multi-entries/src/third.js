@@ -1,1 +1,3 @@
-console.log('third!');
+import { log } from './lib/lib';
+
+log('third!');

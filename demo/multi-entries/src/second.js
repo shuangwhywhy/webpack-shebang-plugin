@@ -1,3 +1,5 @@
 #!/usr/local/bin/node
 
-console.log('second!');
+import { log } from './lib/lib';
+
+log('second!');

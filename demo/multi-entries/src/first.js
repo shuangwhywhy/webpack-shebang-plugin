@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-console.log('first!');
+import { log } from './lib/lib';
+
+log('first');

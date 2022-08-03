@@ -55,7 +55,7 @@ module.exports = class ShebangPlugin {
                 }
             });
             compilation.hooks.buildModule.tap('ShebangPlugin', mod => {
-                if (mod.loaders instanceof Array) {
+                if (mod.loaders instanceof Array && mod.loaders.length) {
                     mod.loaders.push({
                         loader: path.resolve(__dirname, 'loader.js'),
                         options: this.options || {}
